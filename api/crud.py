@@ -1,6 +1,5 @@
 from sqlalchemy.orm import Session, joinedload
 from . import models, schemas
-from datetime import datetime
 
 
 def create_student(db: Session, student: schemas.StudentCreate):
@@ -13,8 +12,6 @@ def create_student(db: Session, student: schemas.StudentCreate):
     except Exception as e:
         db.rollback()
         raise e
-    finally:
-        db.close()
 
 
 def get_student(db: Session, student_id: int):
@@ -23,15 +20,15 @@ def get_student(db: Session, student_id: int):
             options(joinedload(models.Student.scores)).\
             filter(models.Student.id == student_id).\
             first()
-    finally:
-        db.close()
+    except Exception as e:
+        raise e
 
 
 def get_students(db: Session, skip: int = 0, limit: int = 10):
     try:
         return db.query(models.Student).offset(skip).limit(limit).all()
-    finally:
-        db.close()
+    except Exception as e:
+        raise e
 
 
 def update_student(db: Session, student_id: int, student: schemas.StudentUpdate):
@@ -47,8 +44,6 @@ def update_student(db: Session, student_id: int, student: schemas.StudentUpdate)
     except Exception as e:
         db.rollback()
         raise e
-    finally:
-        db.close()
 
 
 def delete_student(db: Session, student_id: int):
@@ -61,8 +56,6 @@ def delete_student(db: Session, student_id: int):
     except Exception as e:
         db.rollback()
         raise e
-    finally:
-        db.close()
 
 
 def create_score(db: Session, score: schemas.ScoreCreate):
@@ -75,22 +68,20 @@ def create_score(db: Session, score: schemas.ScoreCreate):
     except Exception as e:
         db.rollback()
         raise e
-    finally:
-        db.close()
 
 
 def get_score(db: Session, score_id: int):
     try:
         return db.query(models.Score).filter(models.Score.id == score_id).first()
-    finally:
-        db.close()
+    except Exception as e:
+        raise e
 
 
 def get_scores(db: Session, skip: int = 0, limit: int = 10):
     try:
         return db.query(models.Score).offset(skip).limit(limit).all()
-    finally:
-        db.close()
+    except Exception as e:
+        raise e
 
 
 def update_score(db: Session, score_id: int, score: schemas.ScoreUpdate):
@@ -106,8 +97,6 @@ def update_score(db: Session, score_id: int, score: schemas.ScoreUpdate):
     except Exception as e:
         db.rollback()
         raise e
-    finally:
-        db.close()
 
 
 def delete_score(db: Session, score_id: int):
@@ -120,5 +109,3 @@ def delete_score(db: Session, score_id: int):
     except Exception as e:
         db.rollback()
         raise e
-    finally:
-        db.close()
