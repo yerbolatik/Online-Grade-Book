@@ -12,7 +12,7 @@ class StudentBase(BaseModel):
     @validator('grade')
     def validate_grade(cls, value):
         if value < 0 or value > 12:
-            raise ValueError('Grade must be between 0 and 12')
+            raise ValueError('Grade must be between 0 and 11')
         return value
 
     class Config:
